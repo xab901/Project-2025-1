@@ -1,5 +1,5 @@
 from gpiozero import LED, Button
-from time import sleep
+from time import sleep, time
 from random import uniform
 from signal import pause
 
@@ -17,10 +17,17 @@ right_score = 0
 while True:
     led.on()
     sleep(uniform(5, 10))  # randomize sleep time
+    # 记录 LED 熄灭的时间
+    led_off_time = time()
     led.off()
 
     def pressed(button):
-        nonlocal left_score, right_score
+        nonlocal left_score, right_score, led_off_time
+        # 记录玩家按下按钮的时间
+        press_time = time()
+        # 计算玩家反应时间
+        reaction_time = press_time - led_off_time
+
         # show which pin button was on
         if button.pin.number == 14:
             left_score = left_score + 1
@@ -32,6 +39,8 @@ while True:
         # 显示当前玩家总分数
         print(f"{left_name}'s total score: {left_score}")
         print(f"{right_name}'s total score: {right_score}")
+        # 显示玩家反应时间
+        print(f"Reaction time: {reaction_time:.3f} seconds")
 
     right_button.when_pressed = pressed
     left_button.when_pressed = pressed
