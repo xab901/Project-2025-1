@@ -10,25 +10,42 @@ left_button = Button(14)
 left_name = input('left player name is: ')
 right_name = input('right player name is: ')
 
+# Initialize scores
+left_score = 0
+right_score = 0
+
 def start_round():
+	print("\nReady...")
+	sleep(1)
 	led.on()
-	sleep(uniform(5, 10))
+	print("Go!")
+	sleep(uniform(5, 10)) # randomize sleep time
 	led.off()
 
 def pressed(button):
-	# show which pin button was on
+	global left_score, right_score
+
+	# Determine winner
 	if button.pin.number == 14:
-		print(left_name + ' won the game')
+		left_score += 1
+		winner = left_name
 	else:
-		print(right_name + ' won the game')
-	print("Let's play another round......")
-	sleep(1)
+		right_score += 1
+		winner = right_name
+
+	# Display results
+	print(f"\n{winner} wins this round!")
+	print(f"Current scores - {left_name}: {left_score} | {right_name}: {right_score}")
+
+	# Prepare for next round
+	sleep(2) # pause before next round
 	start_round()
 
 right_button.when_pressed = pressed
 left_button.when_pressed = pressed
 
 # Start the first round
+print(f"\nGame starting! First to react wins!")
 start_round()
 
 pause()
