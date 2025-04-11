@@ -10,17 +10,28 @@ left_button = Button(14)
 left_name = input('left player name is: ')
 right_name = input('right player name is: ')
 
+# 初始化玩家分数
+left_score = 0
+right_score = 0
+
 while True:
     led.on()
     sleep(uniform(5, 10))  # randomize sleep time
     led.off()
 
     def pressed(button):
+        nonlocal left_score, right_score
         # show which pin button was on
         if button.pin.number == 14:
+            left_score = left_score + 1
             print(left_name + ' won the game')
         else:
+            right_score = right_score + 1
             print(right_name + ' won the game')
+
+        # 显示当前玩家总分数
+        print(f"{left_name}'s total score: {left_score}")
+        print(f"{right_name}'s total score: {right_score}")
 
     right_button.when_pressed = pressed
     left_button.when_pressed = pressed
