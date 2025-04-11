@@ -1,9 +1,10 @@
 from gpiozero import LED, Button
 from time import sleep
 from random import uniform
+from signal import pause
 
 led = LED(4) # set up the pin as output
-right_button = Button(15)
+right_button = Button(17)
 left_button = Button(14)
 
 left_name = input('left player name is: ')
@@ -23,3 +24,5 @@ def pressed(button):
 
 right_button.when_pressed = pressed
 left_button.when_pressed = pressed
+
+pause()
